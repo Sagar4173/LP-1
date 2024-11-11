@@ -1,0 +1,71 @@
+1.Write a program to simulate CPU scheduling algorithm :Round Robin (Preemptive)
+
+
+### **Step-by-Step Algorithm for the Code (Round Robin Scheduling):**
+
+1. **Initialization:**
+   - The `proc` list contains the process IDs.
+   - The `n` variable contains the number of processes.
+   - The `burst_time` list contains the burst times for each process.
+   - The `quantum` variable contains the time slice that each process can use before being preempted.
+
+2. **Function `findWaitingTime`:**
+   - Initializes the `rem_bt` array to store the remaining burst time for each process, initialized with the original burst time values.
+   - A variable `t` is initialized to 0, representing the current time.
+   - A `while` loop begins to iterate until all processes have completed their execution:
+     - The `done` flag is used to check if all processes are finished. If `done` is `True`, the loop exits.
+     - For each process `i`, if its remaining burst time is greater than zero, the process continues:
+       - If the remaining burst time is greater than the quantum time, the process runs for a time slice of `quantum`, the remaining burst time is reduced by `quantum`, and the current time `t` is incremented by `quantum`.
+       - If the remaining burst time is less than or equal to `quantum`, the process runs for its remaining time, the waiting time `wt[i]` is calculated, and the process is marked as complete by setting `rem_bt[i] = 0`.
+   - This simulates the Round Robin scheduling, where each process gets to run for a time slice (`quantum`) before moving to the next process.
+
+3. **Function `findTurnAroundTime`:**
+   - The turnaround time for each process is calculated as the sum of its burst time and waiting time: `tat[i] = bt[i] + wt[i]`.
+
+4. **Function `findavgTime`:**
+   - This function calculates the average waiting time and average turnaround time for all processes:
+     - The waiting time and turnaround time for each process are computed by calling `findWaitingTime` and `findTurnAroundTime`.
+     - It then calculates the total waiting time and total turnaround time for all processes.
+     - The average waiting time and average turnaround time are computed and printed.
+   
+5. **Display Results:**
+   - Finally, the function displays the process ID, burst time, waiting time, and turnaround time for each process.
+   - The average waiting time and average turnaround time are printed.
+
+---
+
+### **Potential Questions and Answers:**
+
+1. **Q: What is the Round Robin Scheduling Algorithm?**
+   - **A:** Round Robin (RR) is a preemptive CPU scheduling algorithm where each process is assigned a fixed time slice or quantum. When a process's time quantum expires, it is preempted and moved to the back of the queue, allowing the next process to execute. This continues until all processes are completed.
+
+2. **Q: How is the Waiting Time calculated in the Round Robin Scheduling?**
+   - **A:** Waiting time for a process is calculated as the total time the process spends waiting in the ready queue before it begins execution. For each process, the waiting time is updated during each round of execution, depending on how long it has been in the ready queue.
+
+3. **Q: How is Turnaround Time calculated?**
+   - **A:** Turnaround Time is the total time from when the process arrives in the ready queue to when it finishes execution. It is calculated by summing the process's burst time and waiting time: `Turnaround Time = Burst Time + Waiting Time`.
+
+4. **Q: What is the significance of the Quantum in Round Robin Scheduling?**
+   - **A:** The quantum (also known as time slice) determines how long each process runs before being preempted. A small quantum leads to more frequent context switching, while a larger quantum results in fewer context switches but may cause longer waiting times for processes with short burst times.
+
+5. **Q: What is the time complexity of the Round Robin Scheduling algorithm in this code?**
+   - **A:** The time complexity of the Round Robin algorithm depends on the number of processes and their burst times. The algorithm iterates over all processes until their burst time reaches zero, so the complexity is approximately \(O(n \times m)\), where `n` is the number of processes and `m` is the number of times each process requires to be executed before completion.
+
+6. **Q: What would happen if the time quantum is set to a very large value?**
+   - **A:** If the quantum is set to a large value (greater than the burst time of most processes), Round Robin scheduling would behave similarly to First-Come-First-Serve (FCFS) scheduling, as each process would complete its execution in a single time slice without preemption.
+
+7. **Q: How does this code handle the case when all processes have the same burst time?**
+   - **A:** If all processes have the same burst time, the algorithm will execute each process for the quantum amount of time in a round-robin manner, and the waiting time for all processes will be the same.
+
+8. **Q: How would you modify the code for non-preemptive scheduling (e.g., FCFS)?**
+   - **A:** In non-preemptive scheduling, processes do not get interrupted once they start executing. To modify the code for non-preemptive scheduling, remove the concept of time quantum and execute each process to completion before moving to the next one. The waiting time would be calculated based on the order of arrival, not based on time quantum.
+
+9. **Q: Why is the remaining burst time (`rem_bt`) tracked separately in this algorithm?**
+   - **A:** The `rem_bt` array is used to keep track of the remaining burst time for each process after each time slice. It allows the algorithm to know how much time each process still requires to complete, and whether it needs to run for a full quantum or just its remaining burst time.
+
+10. **Q: How would the algorithm behave if processes have variable burst times and the quantum is fixed?**
+    - **A:** If processes have different burst times and the quantum is fixed, each process will be executed in rounds. The shorter burst time processes may finish earlier and leave the remaining quantum time unused, while longer processes may need several rounds to complete.
+
+---
+
+These are the detailed steps and possible questions your teacher may ask based on the code you provided. Let me know if you need any further explanations!

@@ -1,0 +1,71 @@
+practical 15
+Here’s a step-by-step breakdown of the code along with possible questions and answers that a teacher might ask.
+
+### Step-by-Step Algorithm:
+
+1. **Initialize Process and Burst Time Lists**:
+   - We start with lists for `processes` (which holds process IDs) and `burst_time` (the time each process requires to complete).
+   
+2. **Define `findWaitingTime()`**:
+   - **Input**: `processes`, `n` (number of processes), `bt` (burst times), `wt` (array to store waiting times).
+   - **Process**:
+     - Set the waiting time for the first process (`wt[0]`) to 0 since it doesn’t wait for any previous process.
+     - For each subsequent process `i`, calculate its waiting time by adding the burst time of the previous process (`bt[i-1]`) to the waiting time of the previous process (`wt[i-1]`).
+   - **Output**: The function modifies the `wt` list to store waiting times.
+
+3. **Define `findTurnAroundTime()`**:
+   - **Input**: `processes`, `n`, `bt`, `wt`, `tat` (array to store turnaround times).
+   - **Process**:
+     - For each process `i`, calculate the turnaround time by adding the burst time of the process (`bt[i]`) to its waiting time (`wt[i]`).
+   - **Output**: The function modifies the `tat` list to store turnaround times.
+
+4. **Define `findavgTime()`**:
+   - **Input**: `processes`, `n`, `bt`.
+   - **Process**:
+     - Initialize arrays `wt` (for waiting times) and `tat` (for turnaround times).
+     - Set `total_wt` and `total_tat` to zero, which will accumulate total waiting and turnaround times.
+     - Call `findWaitingTime()` to fill the `wt` array with waiting times.
+     - Call `findTurnAroundTime()` to fill the `tat` array with turnaround times.
+     - Print process details (ID, burst time, waiting time, and turnaround time) in a formatted table.
+     - Calculate and print the average waiting time and average turnaround time by dividing `total_wt` and `total_tat` by `n`.
+   - **Output**: Display information about each process and print the average waiting and turnaround times.
+
+5. **Main Function Execution**:
+   - The `__main__` section initializes process IDs and burst times, calculates the number of processes, and calls `findavgTime()`.
+
+### Possible Questions and Answers:
+
+1. **Q: What does the `findWaitingTime()` function calculate?**
+   - **A**: It calculates the waiting time for each process. The waiting time for a process is the sum of burst times of all previous processes.
+
+2. **Q: Why is the waiting time for the first process set to 0?**
+   - **A**: The first process does not have to wait for any previous processes to finish, so its waiting time is zero.
+
+3. **Q: Explain the formula used for calculating waiting time.**
+   - **A**: For a process `i`, the waiting time is calculated as `wt[i] = bt[i - 1] + wt[i - 1]`, where `bt[i - 1]` is the burst time of the previous process, and `wt[i - 1]` is the waiting time of the previous process.
+
+4. **Q: What does the `findTurnAroundTime()` function calculate?**
+   - **A**: It calculates the turnaround time for each process, which is the total time from the process's arrival until it completes. This is done by adding the process's burst time to its waiting time.
+
+5. **Q: Explain the formula used for calculating turnaround time.**
+   - **A**: For each process `i`, the turnaround time is `tat[i] = bt[i] + wt[i]`, where `bt[i]` is the burst time of the process and `wt[i]` is its waiting time.
+
+6. **Q: Why do we calculate both waiting time and turnaround time?**
+   - **A**: Waiting time shows the delay before a process starts, while turnaround time shows the total duration a process takes from start to finish. Together, they give a complete picture of process scheduling efficiency.
+
+7. **Q: Why is it necessary to calculate average waiting and turnaround times?**
+   - **A**: Calculating averages helps measure the overall efficiency of the scheduling algorithm, showing how effectively the processes are managed on average.
+
+8. **Q: What is the output of the `findavgTime()` function?**
+   - **A**: It displays a table of process IDs with their burst times, waiting times, and turnaround times. It also prints the average waiting and turnaround times for all processes.
+
+9. **Q: What is the time complexity of this scheduling algorithm?**
+   - **A**: The time complexity is \(O(n)\), where `n` is the number of processes, because we loop through the processes a constant number of times to compute waiting and turnaround times.
+
+10. **Q: How would you modify the program to take input from the user for process IDs and burst times?**
+    - **A**: We could add an input section in the `__main__` block to take values from the user, store them in the `processes` and `burst_time` lists, and then pass these lists to the `findavgTime()` function.
+
+11. **Q: Can this algorithm be used for non-preemptive scheduling? Why?**
+    - **A**: Yes, this algorithm works for non-preemptive scheduling as it assumes each process runs to completion without interruption once it starts.
+
+Let me know if you’d like a more specific focus on any aspect!

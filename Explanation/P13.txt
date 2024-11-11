@@ -1,0 +1,105 @@
+practical 13
+### Step-by-Step Algorithm of the Code
+
+1. **Initialize Class and Attributes**:
+   - `MacroProcessorPassOne` class is created, with attributes:
+     - `MNT` (Macro Name Table): A dictionary to store macro names and their parameter lists and MDT index.
+     - `MDT` (Macro Definition Table): A list to store the macro body lines.
+     - `intermediate_code`: A list to store code that isn’t part of any macro definition.
+     - `macro_name`: Stores the name of the macro currently being defined.
+     - `macro_params`: Stores parameters of the current macro.
+
+2. **Define Macro Processing Functions**:
+   - `process_macro_definition(line)`: Handles the start and end of macro definitions.
+     - When it encounters `"MACRO"`, it stores the macro name and parameters in `MNT` and marks the start of a macro definition.
+     - When it encounters `"MEND"`, it resets the `macro_name` and `macro_params`, marking the end of a macro definition.
+   - `process_macro_body(line)`: Processes and stores each line of the macro body in `MDT` if a macro is being defined (i.e., `macro_name` is not `None`).
+
+3. **Main Pass-One Function**:
+   - `pass_one(source_code)`: Processes each line in the source code to build `MNT`, `MDT`, and `intermediate_code`.
+     - For each line:
+       - If it starts with `"MACRO"`, calls `process_macro_definition`.
+       - If it starts with `"MEND"`, calls `process_macro_definition` to end the macro.
+       - If a macro is being defined (`macro_name` is set), calls `process_macro_body`.
+       - If the line is not part of any macro definition, it’s added to `intermediate_code`.
+
+4. **Print Functions**:
+   - `print_mnt_mdt()`: Prints the contents of `MNT` and `MDT` to show macro names, parameters, and definitions.
+   - `print_intermediate_code()`: Prints the intermediate code, which includes lines from the original code that were outside macro definitions.
+
+5. **Execute and Display Results**:
+   - An instance of `MacroProcessorPassOne` is created, and the `pass_one` function is called with `source_code` as input.
+   - `print_mnt_mdt()` and `print_intermediate_code()` are called to display `MNT`, `MDT`, and `intermediate_code`.
+
+---
+
+### Expected Output
+
+Given the input source code:
+```plaintext
+Macro Name Table (MNT):
+INCR: {'params': ['&ARG1'], 'mdt_index': 0}
+DECR: {'params': ['&ARG1'], 'mdt_index': 4}
+
+Macro Definition Table (MDT):
+LOAD &ARG1
+ADD =1
+STORE &ARG1
+LOAD &ARG1
+SUB =1
+STORE &ARG1
+
+Intermediate Code (Pass-I Output):
+START 100
+INCR A
+DECR B
+END
+```
+
+---
+
+### Possible Questions and Answers
+
+#### 1. **What are the roles of MNT and MDT?**
+   - **Answer**: `MNT` (Macro Name Table) stores macro names, parameters, and the starting index of each macro in `MDT`. `MDT` (Macro Definition Table) stores the macro body lines, including all statements that should be expanded when the macro is called.
+
+#### 2. **What does the `process_macro_definition` method do?**
+   - **Answer**: This method handles the start (`MACRO`) and end (`MEND`) of a macro definition. When it encounters `MACRO`, it records the macro name, parameters, and the starting index in `MDT` in `MNT`. `MEND` signals the end of the macro, so it clears the macro-related attributes.
+
+#### 3. **Why is `mdt_index` important in MNT?**
+   - **Answer**: `mdt_index` points to the location in `MDT` where each macro’s body starts. This allows us to quickly locate and expand the macro when it’s invoked.
+
+#### 4. **What does `process_macro_body` do?**
+   - **Answer**: It adds lines of the macro body to `MDT` when a macro definition is active (`macro_name` is set). Each line is stored in `MDT`, preserving the macro’s instructions for later expansion.
+
+#### 5. **How does the `pass_one` method handle different types of lines in `source_code`?**
+   - **Answer**: The method iterates over each line in `source_code`. If it finds `MACRO`, it starts processing a macro; if it finds `MEND`, it ends macro processing. If a macro is active, it treats the line as part of the macro body. Otherwise, it adds the line to `intermediate_code`.
+
+#### 6. **What would happen if we didn’t reset `macro_name` and `macro_params` after encountering `MEND`?**
+   - **Answer**: If we didn’t reset `macro_name` and `macro_params`, subsequent lines would mistakenly be considered part of the current macro’s body, adding incorrect lines to `MDT`.
+
+#### 7. **How are parameters defined and used in this macro processor?**
+   - **Answer**: Parameters are defined as tokens following the macro name in `MACRO` lines (e.g., `&ARG1`). `MNT` stores these parameters to facilitate argument substitution during macro expansion (though the current code does not yet implement expansion).
+
+#### 8. **How would this code need to be modified to handle macro expansion?**
+   - **Answer**: To handle macro expansion, we would add a second pass (Pass-II) that looks up macro calls in `MNT`, retrieves the corresponding lines from `MDT`, and replaces parameters with the provided arguments before adding them to the final code.
+
+#### 9. **What’s the purpose of `intermediate_code`?**
+   - **Answer**: `intermediate_code` stores all lines of the source code that are not part of any macro definition. It represents the main body of code that includes macro calls but excludes macro definitions.
+
+#### 10. **Why are `&ARG1` and other parameters prefixed with `&` in the macros?**
+   - **Answer**: The `&` prefix distinguishes macro parameters from regular variables or labels in the code, making it easier to identify and replace them during macro expansion.
+
+#### 11. **What is the output of this Pass-One implementation?**
+   - **Answer**: The output consists of three parts:
+     - **MNT**: Table of macro names, parameters, and their `MDT` start index.
+     - **MDT**: Table containing the body of each macro.
+     - **Intermediate code**: Lines of code outside of macro definitions, including macro calls.
+
+#### 12. **How does this implementation differ from a complete macro processor?**
+   - **Answer**: This implementation is only Pass-One, meaning it collects macro definitions but doesn’t expand them in the code. A complete processor would include a Pass-Two, where macro calls in `intermediate_code` are replaced by the expanded macro body.
+
+#### 13. **How would you extend this code to allow nested macros (macros calling other macros)?**
+   - **Answer**: For nested macros, Pass-Two would need to detect macro calls within expanded macro code and recursively expand them. Care must be taken to handle parameter substitution correctly at each level of nesting.
+
+These questions provide a comprehensive understanding of both the purpose and implementation details of this basic macro processor’s Pass-One functionality.

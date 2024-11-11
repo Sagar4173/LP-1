@@ -1,0 +1,75 @@
+import re
+
+class MacroProcessor:
+    def __init__(self):
+        self.MNT = {}
+        self.MDT = []
+        self.intermediate_code = []
+        self.macro_name = None
+        self.macro_params = None
+
+    def store_macros(self, source_code):
+        macros = {}
+        macro_pattern = re.compile(r"^(\w+)\s+MACRO(.*?)(?=\s+ENDMACRO|$)", re.DOTALL)
+        lines = source_code.split("\n")
+        for line in lines:
+            match = macro_pattern.match(line.strip())
+            if match:
+                macro_name = match.group(1)
+                macro_body = match.group(2).strip()
+                macros[macro_name] = macro_body
+        return macros
+
+    def replace_macros_with_definitions(self, source_code, macros):
+        invocation_pattern = re.compile(r"\b(\w+)\b")
+        lines = source_code.split("\n")
+        processed_lines = []
+        for line in lines:
+            line = line.strip()
+            if invocation_pattern.match(line):
+                words = line.split()
+                for i, word in enumerate(words):
+                    if word in macros:
+                        words[i] = macros[word]
+                processed_lines.append(" ".join(words))
+            else:
+                processed_lines.append(line)
+        return "\n".join(processed_lines)
+
+    def generate_final_code(self, expanded_code):
+        final_code = []
+        lines = expanded_code.split("\n")
+        for line in lines:
+            line = line.strip()
+            if line:
+                final_code.append(f"Generated: {line}")
+        return "\n".join(final_code)
+
+    def process(self, source_code):
+        macros = self.store_macros(source_code)
+        expanded_code = self.replace_macros_with_definitions(source_code, macros)
+        final_code = self.generate_final_code(expanded_code)
+        return expanded_code, final_code
+
+source_code = """
+MACRO    ADD
+    MOV AX, BX
+    ADD AX, CX
+ENDMACRO
+
+MACRO    SUB
+    MOV AX, BX
+    SUB AX, CX
+ENDMACRO
+
+    ADD
+    SUB
+"""
+
+macro_processor = MacroProcessor()
+expanded_code, final_code = macro_processor.process(source_code)
+
+print("Expanded Code After Pass-I:")
+print(expanded_code)
+print("\nFinal Code After Pass-II:")
+print(final_code)

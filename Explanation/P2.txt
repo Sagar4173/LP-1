@@ -1,0 +1,65 @@
+2.Write a program to simulate CPU scheduling algorithm: Priority (Non-Preemptive)
+
+### **Step-by-Step Algorithm for the Code:**
+
+1. **Input and Setup:**
+   - The `proc` list contains the processes with their attributes in the format `[Process ID, Burst Time, Priority]`. Here, each process is represented as a list of three elements: Process ID, Burst Time, and Priority.
+   - The number of processes `n` is set to 3.
+
+2. **Priority Scheduling:**
+   - The function `priorityScheduling(proc, n)` is called to simulate the priority-based scheduling.
+   - Inside this function:
+     - The processes are sorted in descending order of their priority using the lambda function `key=lambda proc: proc[2]`. This sorts the processes such that the process with the highest priority (the lowest priority number) is executed first.
+
+3. **Calculate Waiting Time (`wt`):**
+   - The function `findWaitingTime(processes, n, wt)` calculates the waiting time for each process:
+     - The waiting time for the first process (`wt[0]`) is set to 0.
+     - For each subsequent process, the waiting time is calculated as the sum of the burst time of the previous process and the previous process’s waiting time.
+
+4. **Calculate Turnaround Time (`tat`):**
+   - The function `findTurnAroundTime(processes, n, wt, tat)` calculates the turnaround time for each process:
+     - Turnaround Time for each process is calculated as the sum of its burst time and its waiting time.
+
+5. **Display Process Details:**
+   - The function `findavgTime(processes, n)` is used to display the details of each process, including the Process ID, Burst Time, Waiting Time, and Turnaround Time.
+   - It also calculates and prints the average waiting time and average turnaround time across all processes.
+
+6. **Output:**
+   - After sorting the processes by priority, the order in which the processes are executed is displayed.
+   - The average waiting time and average turnaround time are calculated and printed.
+
+### **Potential Questions and Answers**
+
+1. **Q: What is Priority Scheduling?**
+   - **A:** Priority Scheduling is a scheduling algorithm where each process is assigned a priority, and the CPU is allocated to the process with the highest priority (the smallest number if using numerical priorities). Processes with the same priority are scheduled based on their arrival order or burst time.
+
+2. **Q: What is the difference between Waiting Time and Turnaround Time?**
+   - **A:** Waiting Time (WT) is the total time a process spends waiting in the ready queue before execution starts. Turnaround Time (TAT) is the total time from when a process arrives in the system to when it finishes execution, which includes both waiting time and burst time.
+
+3. **Q: How is the Waiting Time for each process calculated in this code?**
+   - **A:** The waiting time for the first process is 0, and for each subsequent process, it is calculated by adding the burst time of the previous process to the waiting time of the previous process.
+
+4. **Q: How is the Turnaround Time for each process calculated in this code?**
+   - **A:** Turnaround time for each process is calculated as the sum of its burst time and its waiting time.
+
+5. **Q: How are processes sorted in the priority scheduling algorithm in this code?**
+   - **A:** The processes are sorted by their priority in descending order, meaning the process with the highest priority (lowest priority number) is executed first.
+
+6. **Q: What happens if two processes have the same priority?**
+   - **A:** If two processes have the same priority, they are scheduled based on their arrival order, as the sorting function doesn’t change their relative order if priorities are equal.
+
+7. **Q: Why does the program sort the processes by priority before scheduling?**
+   - **A:** Sorting the processes by priority ensures that the process with the highest priority is scheduled first, following the priority scheduling principle.
+
+8. **Q: What is the time complexity of the sorting operation in this program?**
+   - **A:** The sorting operation uses Python's built-in sort, which has a time complexity of \(O(n \log n)\), where \(n\) is the number of processes.
+
+9. **Q: Why are the average waiting time and average turnaround time calculated?**
+   - **A:** The average waiting time and average turnaround time are calculated to assess the efficiency of the scheduling algorithm and to understand the overall system performance.
+
+10. **Q: How would you modify the code for non-preemptive priority scheduling?**
+    - **A:** This code already uses non-preemptive priority scheduling, meaning that once a process starts executing, it cannot be interrupted until it finishes. In a preemptive priority scheduling scenario, if a higher priority process arrives while another is executing, the running process would be preempted and placed back in the ready queue.
+
+---
+
+This covers the algorithm and a set of potential questions your teacher may ask. If you'd like more details or additional questions, feel free to ask!

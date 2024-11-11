@@ -1,0 +1,114 @@
+### Step-by-Step Algorithm for the First Fit Memory Allocation Code
+
+---
+
+### **1. Problem Overview**
+
+The **First Fit** algorithm allocates the first available memory block that is large enough to accommodate a process. It proceeds sequentially through the list of blocks.
+
+---
+
+### **2. Detailed Steps of the Algorithm**
+
+#### **Step 1: Initialize Allocation Array**
+- **`allocation`** is an array initialized to `-1` for each process. This array will store the block index allocated to each process or `-1` if no block is allocated.
+
+#### **Step 2: Iterate Over Each Process**
+- **Outer Loop (`for i in range(n)`):**
+  - Traverse through each process in the `processSize` array.
+
+#### **Step 3: Search for a Suitable Block**
+- **Inner Loop (`for j in range(m)`):**
+  - For the current process (`processSize[i]`), check each block in `blockSize`.
+  - If the block (`blockSize[j]`) is large enough to hold the process:
+    - Allocate the block to the process: `allocation[i] = j`.
+    - Reduce the block size to reflect the allocated memory: `blockSize[j] -= processSize[i]`.
+    - Break the inner loop (`break`) since the process is allocated.
+
+#### **Step 4: Display Allocation**
+- After processing all processes:
+  - Print a table showing the process number, its size, and the allocated block number (or "Not Allocated" if no block was suitable).
+
+---
+
+### **3. Output**
+For the given input:
+```python
+blockSize = [100, 500, 200, 300, 600] 
+processSize = [212, 417, 112, 426]
+```
+
+The output will be:
+
+```
+ Process No. Process Size	 Block no.
+  1		         212		         2
+  2		         417		         5
+  3		         112		         3
+  4		         426		         Not Allocated
+```
+
+---
+
+### Possible Questions and Answers
+
+---
+
+#### **1. What is the First Fit Algorithm?**
+- **Answer**: The First Fit algorithm allocates the first available block of memory that is large enough to accommodate a process.
+
+---
+
+#### **2. How Does the First Fit Algorithm Work?**
+- **Answer**: 
+  - For each process, it scans the list of memory blocks.
+  - It assigns the first block that can fit the process and reduces the block's available memory.
+
+---
+
+#### **3. What is the Complexity of First Fit?**
+- **Answer**:
+  - **Time Complexity**: \(O(n \times m)\), where \(n\) is the number of processes and \(m\) is the number of blocks. This is because each process may potentially check all blocks.
+  - **Space Complexity**: \(O(n + m)\) for storing process and block information.
+
+---
+
+#### **4. Why Might a Process Not Be Allocated Memory?**
+- **Answer**: A process might not be allocated memory if:
+  1. No block is large enough to accommodate the process.
+  2. All sufficiently large blocks are already occupied.
+
+---
+
+#### **5. How Does First Fit Differ from Best Fit and Worst Fit?**
+- **Answer**:
+  - **First Fit**: Allocates the first block that is large enough.
+  - **Best Fit**: Allocates the smallest block that is large enough, minimizing leftover space.
+  - **Worst Fit**: Allocates the largest available block to maximize the leftover space.
+
+---
+
+#### **6. What Happens to Block Sizes After Allocation?**
+- **Answer**: After a block is allocated to a process, its available size is reduced by the size of the allocated process.
+
+---
+
+#### **7. Can First Fit Lead to Fragmentation?**
+- **Answer**: Yes, **external fragmentation** can occur because memory is allocated from the first available block, leaving smaller unusable gaps between allocations.
+
+---
+
+#### **8. Why Does the Algorithm Use `break` After Allocation?**
+- **Answer**: The `break` statement exits the inner loop once a block is allocated to ensure the process is assigned only the first suitable block.
+
+---
+
+#### **9. How Would the Output Change if the Process Sizes Were Different?**
+- **Answer**: If process sizes or block sizes change, the allocation and remaining memory in each block would also differ. The specific block allocations or "Not Allocated" statuses would reflect this.
+
+---
+
+#### **10. How Can You Optimize the First Fit Algorithm?**
+- **Answer**: Optimization might include:
+  - Keeping track of the last allocated block to reduce search time.
+  - Using data structures like a linked list or tree to manage blocks dynamically.

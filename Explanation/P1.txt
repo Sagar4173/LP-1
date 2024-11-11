@@ -1,0 +1,62 @@
+1.Write a program to simulate CPU scheduling algorithm SJF (Preemptive)
+
+
+Algorithm for Preemptive SJF CPU Scheduling:
+Initialize Input and Data Structures
+
+Take the number of processes, n, as input.
+Define a matrix A to store Process ID, Burst Time, Waiting Time, and Turnaround Time for each process.
+Initialize variables total, avg_wt, and avg_tat to store cumulative waiting time and turnaround time, and for computing averages.
+Input Burst Times
+
+For each process from i=0 to i=n-1:
+Take the burst time for each process and store it in A[i][1].
+Assign process IDs in sequential order in A[i][0].
+Sort by Burst Time
+
+Sort the list of processes by Burst Time (SJF criterion):
+For each process i, find the process with the smallest Burst Time among the remaining unsorted processes.
+Swap the current process with the process having the smallest Burst Time.
+This simulates the SJF algorithm, where shorter jobs are given priority.
+Calculate Waiting Time (WT)
+
+Set A[0][2] = 0, as the waiting time for the first process is zero.
+For each process i from 1 to n-1:
+Calculate the waiting time A[i][2] as the cumulative burst time of all previous processes (sum of Burst Times up to process i).
+Add the waiting time to total for calculating the average later.
+Compute Average Waiting Time
+
+Divide total by the number of processes n to get avg_wt.
+Calculate Turnaround Time (TAT)
+
+For each process i, calculate Turnaround Time A[i][3] as the sum of Burst Time and Waiting Time for that process.
+Add Turnaround Time to total to compute the average later.
+Compute Average Turnaround Time
+
+Divide the cumulative turnaround time total by n to get avg_tat.
+Display Results
+
+Print the Process ID, Burst Time, Waiting Time, and Turnaround Time for each process.
+Display the avg_wt and avg_tat.
+Potential Questions and Answers
+Q: What is the main principle of SJF scheduling?
+
+A: SJF (Shortest Job First) scheduling is a CPU scheduling algorithm that selects the process with the shortest burst time to execute next, minimizing waiting time for shorter tasks.
+Q: Why is SJF known as a preemptive scheduling algorithm?
+
+A: SJF is preemptive when it checks burst times continuously and allows shorter processes to interrupt longer ones. This code, however, simulates non-preemptive behavior as it only schedules based on initially sorted burst times.
+Q: How is Waiting Time calculated in SJF?
+
+A: The waiting time for each process is calculated by adding the burst times of all previously scheduled processes.
+Q: How is Turnaround Time calculated for each process?
+
+A: Turnaround Time is the sum of a process's Burst Time and Waiting Time.
+Q: What would happen if two processes have the same Burst Time?
+
+A: If two processes have the same Burst Time, they are scheduled in the order they appear in the input (process ID order).
+Q: Why do we divide the total waiting time and turnaround time by n?
+
+A: Dividing by n provides the average waiting time and average turnaround time across all processes, useful for evaluating scheduling efficiency.
+Q: What is the time complexity of sorting the processes by Burst Time?
+
+A: Sorting has a time complexity of O(n^2) in this code due to the nested loops.

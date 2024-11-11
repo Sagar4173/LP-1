@@ -1,0 +1,91 @@
+### Step-by-Step Algorithm of the Code:
+
+1. **Class Definitions:**
+   - **SymbolTable**: Stores labels and their corresponding addresses.
+   - **LiteralTable**: Stores literals and their addresses, also manages literal pools.
+   - **IntermediateCode**: Stores instructions along with their addresses and operands.
+
+2. **AssemblerPass1 Initialization**:
+   - Initializes `symbol_table`, `literal_table`, `intermediate_code`, and sets the `location_counter` to 0.
+   - Defines the directives `START`, `END`, and `LTORG` and assigns respective methods to handle them.
+
+3. **Directives**:
+   - **START**: Sets the `location_counter` to the specified operand (starting address).
+   - **END**: Allocates any unallocated literals in the literal table.
+   - **LTORG**: Allocates literals in the literal table from the current `location_counter`.
+
+4. **Processing Each Line**:
+   - The `process_line()` method parses each line of source code into `label`, `instruction`, and `operand`.
+   - If a label is present, it's added to the symbol table with the current `location_counter`.
+   - If the instruction is a directive (e.g., `START`, `END`, `LTORG`), the appropriate directive handler is called.
+   - If the instruction is not a directive, it's added to the intermediate code along with the operand, and the `location_counter` is incremented.
+   - If an operand is a literal (i.e., starts with '='), it's added to the literal table.
+
+5. **Assembly Process**:
+   - The `assemble()` method processes each line of the source code, updating the symbol table, literal table, and intermediate code.
+   - Finally, the symbol table, literal table, and intermediate code are returned.
+
+6. **Output**:
+   - Prints the contents of the symbol table, literal table (with literal pools), and intermediate code.
+
+---
+
+### Possible Questions and Their Answers:
+
+1. **What is the purpose of the `SymbolTable` class?**
+   - It stores labels and their corresponding addresses.
+
+2. **What does the `LiteralTable` class do?**
+   - It stores literals and their addresses and manages literal pools.
+
+3. **What is the function of the `IntermediateCode` class?**
+   - It stores instructions, along with their addresses and operands.
+
+4. **What is the role of `AssemblerPass1` in the code?**
+   - It processes source code, handling labels, directives, and instructions while updating tables.
+
+5. **How does the `START` directive work?**
+   - It sets the `location_counter` to the specified starting address.
+
+6. **What happens when the `END` directive is encountered?**
+   - It allocates any literals that haven't been allocated yet in the literal table.
+
+7. **Explain the purpose of the `LTORG` directive.**
+   - It allocates literals from the current `location_counter` in the literal table.
+
+8. **What does the `process_line()` method do?**
+   - It parses each line of the source code, identifies labels, instructions, and operands, and updates tables accordingly.
+
+9. **What does the `add_symbol()` method in the `SymbolTable` class do?**
+   - It adds a label to the symbol table with the current address if it's not already present.
+
+10. **What does the `add_literal()` method in the `LiteralTable` class do?**
+    - It adds a literal to the literal table if it hasn't been added already.
+
+11. **How does the literal allocation work in `LiteralTable`?**
+    - Literals are allocated an address starting from a specified `start_address`, and the `location_counter` is updated.
+
+12. **Why is the `location_counter` used in the assembly process?**
+    - It keeps track of the current address where the next instruction or literal will be placed.
+
+13. **What is the significance of the `symbol_table` in the assembly process?**
+    - It stores labels and their addresses to resolve labels during the assembly process.
+
+14. **What does the `__str__` method in each class do?**
+    - It provides a string representation of the object for easy printing and visualization.
+
+15. **What happens if a literal is already present in the literal table?**
+    - The literal is not added again to avoid duplicates.
+
+16. **What does the `assemble()` method return?**
+    - It returns the symbol table, literal table, and intermediate code after processing the source code.
+
+17. **How does the code handle literals starting with '='?**
+    - Literals starting with '=' are added to the literal table for later allocation.
+
+18. **What is the final output of the program?**
+    - The symbol table, literal table with pools, and intermediate code are printed.
+
+---
+
+This covers the core functionality of the code along with possible questions and concise answers. Let me know if you need further details!

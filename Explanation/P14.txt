@@ -1,0 +1,72 @@
+practical 14
+
+The code defines a simplified Pass-One Macro Processor in Python, focusing on identifying macro definitions and storing them in a structured format for later use. Here’s a step-by-step algorithm of the code, followed by potential questions your teacher might ask with their answers.
+
+---
+
+### Step-by-Step Algorithm
+
+1. **Initialize the Macro Processor**:
+   - `MacroProcessorPassOne.__init__()`:
+     - Create empty data structures:
+       - `MNT` (Macro Name Table): Stores macro names with their parameters and positions in the Macro Definition Table.
+       - `MDT` (Macro Definition Table): Stores lines of macro definitions.
+       - `intermediate_code`: Stores code lines that are not part of macro definitions.
+       - `macro_def_start`: A flag indicating whether the processor is currently reading a macro definition.
+
+2. **Define a Macro (`define_macro` method)**:
+   - Adds a new macro entry to the `MNT` with:
+     - Macro name, parameter list, and the starting index in the `MDT`.
+
+3. **Add a Line to MDT (`add_to_MDT` method)**:
+   - Appends a line to `MDT`, useful for storing macro definition lines.
+
+4. **Process Each Line (`process_line` method)**:
+   - Splits the line into tokens.
+   - If the line starts with `MACRO`:
+     - Set `macro_def_start` to `True`, indicating that the processor is entering a macro definition.
+   - If the line starts with `MEND`:
+     - Append `MEND` to the `MDT`, set `macro_def_start` to `False`, and mark the end of the macro definition.
+   - If `macro_def_start` is `True` and the line doesn’t contain `MEND`:
+     - If it’s the first line after `MACRO`, interpret it as the macro name and parameters, then call `define_macro`.
+     - For subsequent lines, add them to `MDT`.
+   - If `macro_def_start` is `False` (outside a macro definition):
+     - Add the line to `intermediate_code`.
+
+5. **Process the Source Code (`pass_one` method)**:
+   - Iterates over each line in the source code and calls `process_line` on each.
+
+6. **Print Results (`print_results` method)**:
+   - Displays the `MNT`, `MDT`, and `intermediate_code` to show the output of the Pass-One phase.
+
+### Possible Questions and Answers
+
+#### Q1: What is the purpose of the `MNT` (Macro Name Table)?
+**A1:** The `MNT` stores macro names with their parameters and the starting index of each macro definition in the `MDT`. This table helps the macro processor quickly locate macro definitions in `MDT` during expansion (Pass Two).
+
+#### Q2: What does the `MDT` (Macro Definition Table) do?
+**A2:** The `MDT` holds the actual lines of code for each macro definition. Each line in the macro body is stored sequentially, and the `MNT` provides the index to locate each macro definition.
+
+#### Q3: How does `define_macro` work?
+**A3:** `define_macro` adds a new entry in the `MNT` for the given macro name. It stores the macro's parameters and the current length of the `MDT`, which is the index where this macro’s definition starts.
+
+#### Q4: What does the `process_line` method do when it encounters `MACRO`?
+**A4:** When `process_line` encounters the keyword `MACRO`, it sets `macro_def_start` to `True`, indicating that the lines following `MACRO` are part of a macro definition until the processor encounters `MEND`.
+
+#### Q5: How is the `MEND` keyword handled in this code?
+**A5:** When `process_line` encounters `MEND`, it adds `MEND` to the `MDT`, sets `macro_def_start` to `False`, and marks the end of the current macro definition.
+
+#### Q6: What does `intermediate_code` contain?
+**A6:** `intermediate_code` contains all lines of source code that are outside of macro definitions. These lines can include standard assembly instructions or macro calls, which will be handled during Pass Two.
+
+#### Q7: Why is `macro_def_start` necessary in this code?
+**A7:** `macro_def_start` is a flag indicating if the code is inside a macro definition. This distinction allows the processor to add lines to the `MDT` when defining a macro and to `intermediate_code` when processing non-macro code.
+
+#### Q8: What happens if there’s no `MEND` after a `MACRO`?
+**A8:** If there’s no `MEND`, the processor would not know when the macro definition ends. This could lead to incorrectly including lines meant for `intermediate_code` in the `MDT`.
+
+#### Q9: How does the code handle macro parameters?
+**A9:** The macro parameters are stored in the `MNT` as part of the macro’s entry. They are not processed during Pass One, but the structure allows Pass Two to use these parameters for expansion.
+
+#### Q10: Why do we use `print_results` at the end of the code?
+**A10:** `print_results` is used to display the contents of the `MNT`, `MDT`, and `intermediate_code`. This output allows us to verify that Pass One has correctly processed the source code and stored macro definitions and intermediate code.
