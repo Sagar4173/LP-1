@@ -1,0 +1,23 @@
+Process: A program in execution that requires resources (CPU time, memory, etc.) to perform tasks.
+Activity: The series of actions performed by a process, including computation, input/output operations, and waiting.
+Scheduling: The method by which processes are assigned to run on the CPU based on a specific strategy or algorithm.
+Types of Scheduling:
+First-Come, First-Served (FCFS): Processes are executed in the order they arrive.
+Shortest Job First (SJF): Executes the process with the shortest burst time first.
+Round Robin (RR): Each process gets a fixed time slot in rotation.
+Priority Scheduling: Processes are scheduled based on priority levels.
+Multilevel Queue Scheduling: Segregates processes into different queues based on categories.
+Which is Better: The best scheduling algorithm depends on the scenario; SJF minimizes average waiting time but can cause starvation, while RR ensures fair CPU time distribution.
+Why Do We Need Scheduling: To manage CPU resources efficiently, maximize CPU utilization, reduce waiting time, and ensure fairness among processes.
+Waiting Time (WT): The total time a process spends in the queue waiting for its turn to execute.
+Burst Time (BT): The time a process needs for execution.
+Waiting Time (WT): The time a process waits before starting execution.
+Turnaround Time (TAT): The total time from when a process enters the queue until it completes (BT + WT).
+Matrix A: Stores process ID, BT, WT, and TAT for each process.
+SJF Scheduling: Executes processes in order of the shortest burst time.
+Sorting: Arranges processes by BT using selection sort.
+First Process WT: Always 0, as it starts immediately.
+WT Calculation: Sum of BTs of all previous processes.
+TAT Calculation: Sum of BT and WT for each process.
+Output: Prints process details and average WT and TAT.
+Starvation: Risk of indefinite delay for longer processes.
